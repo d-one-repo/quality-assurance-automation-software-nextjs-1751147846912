@@ -1,0 +1,242 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+app/globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+app/layout.tsx
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+const inter = Inter({ subsets: ['latin'] })
+export const metadata: Metadata = {
+  title: 'Native Union QA Automation',
+  description: 'Quality Assurance Automation Software for Native Union',
+}
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  )
+}
+app/page.tsx
+'use client'
+import { useState } from 'react'
+import { 
+  CheckCircle, 
+  AlertTriangle, 
+  XCircle, 
+  Leaf, 
+  Zap, 
+  Shield, 
+  BarChart3, 
+  Settings, 
+  Play, 
+  Pause,
+  RefreshCw,
+  Download,
+  Filter,
+  Search,
+  Bell
+} from 'lucide-react'
+interface TestResult {
+  id: string
+  productName: string
+  testType: string
+  status: 'passed' | 'failed' | 'warning'
+  sustainabilityScore: number
+  qualityScore: number
+  timestamp: string
+  details: string
+}
+interface SustainabilityMetric {
+  category: string
+  score: number
+  target: number
+  trend: 'up' | 'down' | 'stable'
+}
+export default function QADashboard() {
+  const [activeTab, setActiveTab] = useState('overview')
+  const [isRunningTests, setIsRunningTests] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const testResults: TestResult[] = [
+    {
+      id: '1',
+      productName: 'Stow Lite Cable',
+      testType: 'Material Sustainability',
+      status: 'passed',
+      sustainabilityScore: 92,
+      qualityScore: 88,
+      timestamp: '2024-01-15 14:30',
+      details: 'Recycled materials verified, durability tests passed'
+    },
+    {
+      id: '2',
+      productName: 'Belt Cable Pro',
+      testType: 'Durability Testing',
+      status: 'warning',
+      sustainabilityScore: 85,
+      qualityScore: 94,
+      timestamp: '2024-01-15 13:45',
+      details: 'Minor packaging sustainability improvements needed'
+    },
+    {
+      id: '3',
+      productName: 'Night Cable',
+      testType: 'Eco-Certification',
+      status: 'failed',
+      sustainabilityScore: 67,
+      qualityScore: 91,
+      timestamp: '2024-01-15 12:20',
+      details: 'Packaging materials do not meet eco-friendly standards'
+    },
+    {
+      id: '4',
+      productName: 'Curve Case',
+      testType: 'Quality Assurance',
+      status: 'passed',
+      sustainabilityScore: 89,
+      qualityScore: 96,
+      timestamp: '2024-01-15 11:15',
+      details: 'All quality and sustainability benchmarks exceeded'
+    }
+  ]
+  const sustainabilityMetrics: SustainabilityMetric[] = [
+    { category: 'Recycled Materials', score: 87, target: 90, trend: 'up' },
+    { category: 'Carbon Footprint', score: 78, target: 85, trend: 'up' },
+    { category: 'Packaging Efficiency', score: 92, target: 88, trend: 'stable' },
+    { category: 'End-of-Life Recyclability', score: 84, target: 80, trend: 'up' }
+  ]
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'passed':
+        return <CheckCircle className="h-5 w-5 text-green-500" />
+      case 'warning':
+        return <AlertTriangle className="h-5 w-5 text-yellow-500" />
+      case 'failed':
+        return <XCircle className="h-5 w-5 text-red-500" />
+      default:
+        return null
+    }
+  }
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'passed':
+        return 'bg-green-100 text-green-800'
+      case 'warning':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'failed':
+        return 'bg-red-100 text-red-800'
+      default:
+        return 'bg-gray-100 text-gray-800'
+    }
+  }
+  const filteredResults = testResults.filter(result =>
+    result.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    result.testType.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+  const runAutomatedTests = () => {
+    setIsRunningTests(true)
+    setTimeout(() => {
+      setIsRunningTests(false)
+    }, 3000)
+  }
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <h1 className="text-2xl font-bold text-gray-900">Native Union QA</h1>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <button className="p-2 text-gray-400 hover:text-gray-500">
+                <Bell className="h-6 w-6" />
+              </button>
+              <div className="flex
